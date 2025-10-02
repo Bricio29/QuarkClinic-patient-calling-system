@@ -1,0 +1,126 @@
+// Configuração base da tela
+:host {
+  display: block;
+  min-height: 100vh; 
+  height: 100%;
+  background-color: #f3f4f6; 
+  font-family: 'Inter', Arial, sans-serif;
+}
+
+.main-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+// Cabeçalho
+.header {
+  height: 50px;
+  background-color: #0a5750;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  font-size: 1.1em;
+  font-weight: bold;
+  flex-wrap: wrap; 
+  
+  .title {
+    font-size: 0.8em;
+    @media (max-width: 1024px) {
+      display: none;
+    }
+  }
+  
+  .info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.8em;
+      
+    span:first-child { 
+      @media (max-width: 900px) {
+        display: none;
+      }
+    }
+  }
+
+  .data {
+    font-weight: 500;
+    font-size: 0.9em;
+  }
+
+  .hour {
+    font-size: 1.5em;
+  }
+
+  // Estilo da Logo
+  .logo {
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
+  .logo-img {
+    height: 30px;
+    object-fit: contain;
+  }
+}
+
+// Área de conteúdo (MAIN + ASIDE)
+.content-area {
+  flex-grow: 1;
+  display: flex;
+  width: 100%; /* Ocupa a largura total abaixo do header */
+  height: calc(100vh - 60px); /* Ocupa o restante da altura da tela */
+  overflow: hidden;
+  background-color: #f3f4f6; /* Fundo claro */
+}
+
+// Área Principal
+.main-content {
+  flex-grow: 1;
+  position: relative;
+  background-color: #f3f4f6;
+  min-width: 60%; /* Garante que não fique muito pequeno */
+  padding: 20px; /* Padding interno para separar da borda da tela */
+  box-sizing: border-box;
+}
+
+// Histórico (Barra Lateral)
+.sidebar {
+  width: 1000px; /* Largura fixa conforme o visual da imagem */
+  min-width: 300px;
+  background-color: white;
+  border: 1px solid #e0e0e0;
+  padding: 20px;
+  box-sizing: border-box;
+  border-radius: 10px;
+  overflow-y: auto; /* Permite rolar se o histórico for longo */
+
+  // Ajusta o padding para o conteúdo da barra lateral
+  app-history-list {
+    display: block;
+  }
+}
+
+// O painel de vídeo animado (dentro do .main-content)
+app-video-panel {
+  position: absolute;
+  overflow: hidden;
+  top: 20px; /* Começa com o padding do .main-content */
+  left: 20px;
+  z-index: 10;
+  // O width/height/bottom/right são controlados pela animação no TS
+}
+
+// O componente de destaque da chamada (app-call-panel)
+app-call-panel {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: calc(100% - 40px); /* 100% - (20px left + 20px right) */
+  height: calc(100% - 40px);
+  z-index: 20; 
+  transition: opacity 0.3s ease-in-out; 
+}

@@ -1,0 +1,24 @@
+<div class="history-header">
+    <span class="title">HISTÓRICO GERAL</span>
+    <div class="controls">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><circle cx="12" cy="12" r="10"></circle><polygon points="10 8 16 12 10 16 10 8"></polygon></svg>
+    </div>
+</div>
+
+<ul class="history-list">
+    <li *ngFor="let c of history; trackBy: trackByCallId" class="history-item">
+        <div class="info-group">
+            <span class="senha">{{ c.senha }}</span>
+            <span class="horario">{{ c.horario }}</span>
+        </div>
+        <div class="info-group">
+            <span class="medico">{{ c.medico + " - " + c.especialidade }}</span>
+            <span class="guiche">{{ 'Guichê ' + c.guiche }}</span>
+        </div>
+    </li>
+    
+    <li *ngIf="history.length === 0" class="history-empty">
+        <p>Ainda não há chamadas no histórico.</p>
+    </li>
+</ul>

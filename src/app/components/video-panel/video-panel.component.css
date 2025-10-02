@@ -1,0 +1,20 @@
+:host {
+    display: block;
+    overflow: hidden; 
+    border-radius: 8px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+    width: 100%; 
+    height: 100%;
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+#player-iframe {
+    width: 100%;
+    height: 100%;
+}
+
+#player-iframe iframe {
+    width: 100% !important;
+    height: 100% !important;
+    display: block;
+}
