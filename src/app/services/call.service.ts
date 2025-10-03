@@ -7,7 +7,7 @@ export interface Call {
   senha: string;
   guiche: string;
   especialidade: string;
-  medico: string;
+  paciente: string;
   horario: string;
 }
 
@@ -20,41 +20,41 @@ export class CallService {
     {
       id: '1',
       senha: 'CG-001P',
-      medico: 'J. HEBERT',
+      paciente: 'J. HEBERT',
       especialidade: 'C. GERAL',
-      guiche: '2',
+      guiche: 'Guichê 2',
       horario: '10:19',
     },
     {
       id: '2',
       senha: 'OD-002A',
-      medico: 'SARA INGRID',
+      paciente: 'SARA INGRID',
       especialidade: 'ODONTO',
-      guiche: '3',
+      guiche: 'Guichê 3',
       horario: '10:22',
     },
     {
       id: '3',
       senha: 'PE-005I',
-      medico: 'DAVI R.',
+      paciente: 'DAVI R.',
       especialidade: 'PEDIATRIA',
-      guiche: '1',
+      guiche: 'Guichê 1',
       horario: '10:25',
     },
     {
       id: '4',
       senha: 'CA-003A',
-      medico: 'ANA SILVA',
+      paciente: 'ANA SILVA',
       especialidade: 'CARDIO',
-      guiche: '4',
+      guiche: 'Guichê 4',
       horario: '10:28',
     },
     {
       id: '5',
       senha: 'FO-002P',
-      medico: 'THAYNÁ T.',
+      paciente: 'THAYNÁ T.',
       especialidade: 'FONO',
-      guiche: '5',
+      guiche: 'Guichê 5',
       horario: '10:28',
     },
   ];
