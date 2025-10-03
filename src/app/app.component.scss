@@ -1,10 +1,10 @@
 // Configuração base da tela
 :host {
   display: block;
-  min-height: 100vh; 
+  min-height: 100vh;
   height: 100%;
-  background-color: #f3f4f6; 
-  font-family: 'Inter', Arial, sans-serif;
+  background-color: #f3f4f6;
+  font-family: "Inter", Arial, sans-serif;
 }
 
 .main-container {
@@ -24,22 +24,22 @@
   padding: 0 20px;
   font-size: 1.1em;
   font-weight: bold;
-  flex-wrap: wrap; 
-  
+  flex-wrap: wrap;
+
   .title {
     font-size: 0.8em;
     @media (max-width: 1024px) {
       display: none;
     }
   }
-  
+
   .info {
     display: flex;
     align-items: center;
     gap: 10px;
     font-size: 0.8em;
-      
-    span:first-child { 
+
+    span:first-child {
       @media (max-width: 900px) {
         display: none;
       }
@@ -121,6 +121,6 @@ app-call-panel {
   left: 20px;
   width: calc(100% - 40px); /* 100% - (20px left + 20px right) */
   height: calc(100% - 40px);
-  z-index: 20; 
-  transition: opacity 0.3s ease-in-out; 
+  z-index: 20;
+  transition: opacity 0.3s ease-in-out;
 }

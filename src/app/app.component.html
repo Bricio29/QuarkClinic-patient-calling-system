@@ -1,5 +1,4 @@
 <div class="main-container">
-
   <header class="header">
     <div class="title">CLINICA VALIDAÇÕES - JFS (MATRIZ)</div>
     <div class="info">
@@ -7,29 +6,23 @@
       <span class="hour">{{ currentTime$ | async }}</span>
 
       <span class="logo">
-        <img src="/img/logoquarkclinic.svg" alt="QuarkClinic Logo" class="logo-img">
+        <img src="/img/logoquarkclinic.svg" alt="QuarkClinic Logo" class="logo-img" />
       </span>
     </div>
   </header>
 
   <div class="content-area">
-
     <main class="main-content">
-
-      <app-call-panel *ngIf="(currentCall$ | async) as call" [call]="call">
+      <app-call-panel *ngIf="currentCall$ | async as call" [call]="call">
       </app-call-panel>
 
-      <app-video-panel 
-        #videoPlayer 
-        [playlistIds]="videoPlaylist"
-        [@videoPanelState]="animationState" 
-        [isDestaque]="animationState === 'video-destaque'">
+      <app-video-panel #videoPlayer [playlistIds]="videoPlaylist" [@videoPanelState]="animationState" [isDestaque]="animationState === 'video-destaque'">
       </app-video-panel>
     </main>
 
     <aside class="sidebar">
-      <app-history-list [history]="(callService.history$ | async) || []"></app-history-list>
+      <app-history-list [history]="(callService.history$ | async) || []" (toggleMute)="onToggleVideoMute()" (toggleVideoSize)="onToggleVideoSize()">
+      </app-history-list>
     </aside>
-
   </div>
 </div>

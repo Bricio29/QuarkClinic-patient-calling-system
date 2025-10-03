@@ -1,121 +1,162 @@
-import { Component, OnInit, OnDestroy, ViewChild, HostListener } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ViewChild,
+  HostListener,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { trigger, state, style, transition, animate } from '@angular/animations';
+import {
+  trigger,
+  state,
+  style,
+  transition,
+  animate,
+} from '@angular/animations';
 import { Observable, Subscription, interval, map } from 'rxjs';
-import { CallService, Call } from './services/call.service'; 
+import { CallService, Call } from './services/call.service';
 import { VideoPanelComponent } from './components/video-panel/video-panel.component';
 import { CallPanelComponent } from './components/call-panel/call-panel.component';
 import { HistoryListComponent } from './components/history-list/history-list.component';
 
 @Component({
-  selector: 'app-root',
-  standalone: true, 
-  imports: [
-    CommonModule, 
-    VideoPanelComponent, 
-    CallPanelComponent, 
-    HistoryListComponent
-  ],
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'], 
-  animations: [
-    trigger('videoPanelState', [
-      // Estado padrão: Vídeo em destaque principal
-      state('video-destaque', style({
-        // Ajusta a largura para o espaço principal (total - largura da sidebar)
-        width: 'calc(100% - 390px)', // Considerando 350px de sidebar + 40px de padding/margem
-        height: 'calc(100% - 40px)', // Considerando 20px top + 20px bottom do main-content
-        top: '20px',
-        left: '20px',
-      })),
+  selector: 'app-root',
+  standalone: true,
+  imports: [
+    CommonModule,
+    VideoPanelComponent,
+    CallPanelComponent,
+    HistoryListComponent,
+  ],
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss'],
+  animations: [
+    trigger('videoPanelState', [
+      // Estado padrão: Vídeo em destaque principal
+      state(
+        'video-destaque',
+        style({
+          width: 'calc(100% - 390px)',
+          height: 'calc(100% - 40px)',
+          top: '20px',
+          left: '20px',
+        })
+      ), // Estado de chamada: Vídeo reduzido no canto
 
-      // Estado de chamada: Vídeo reduzido no canto
-      state('chamada-destaque', style({
-        width: '380px', 
-        height: '240px', 
-        bottom: '20px', 
-        right: '20px', // Posição relativa ao main-content
-        top: 'auto', // Garante que o bottom: 20px seja respeitado
-        left: 'auto' // Garante que o right: 20px seja respeitado
-      })),
+      state(
+        'chamada-destaque',
+        style({
+          width: '380px',
+          height: '240px',
+          bottom: '20px',
+          right: '20px',
+          top: 'auto',
+          left: 'auto',
+        })
+      ), // Transição suave (REQ_02)
 
-      // Transição suave (REQ_02)
-      transition('video-destaque <=> chamada-destaque', [
-        animate('0.7s ease-in-out') 
-      ]),
-    ]),
-  ],
+      transition('video-destaque <=> chamada-destaque', [
+        animate('0.7s ease-in-out'),
+      ]),
+    ]),
+  ],
 })
-// CORREÇÃO ESSENCIAL: Adicionar 'export' para que a classe possa ser importada pelo main.ts
+
 export class AppComponent implements OnInit, OnDestroy {
-  @ViewChild(VideoPanelComponent) videoPlayer!: VideoPanelComponent;
-  currentCall$!: Observable<Call | null>;
-  animationState: 'video-destaque' | 'chamada-destaque' = 'video-destaque';
+  @ViewChild(VideoPanelComponent) videoPlayer!: VideoPanelComponent;
+  currentCall$!: Observable<Call | null>;
+  animationState: 'video-destaque' | 'chamada-destaque' = 'video-destaque';
+  isMuted: boolean = true; // Estado local do som (inicia mudo) // REQ_03: Ativa a chamada via teclado (Tecla 'S')
 
-  // REQ_03: Ativa a chamada via teclado (Tecla 'S')
-  @HostListener('document:keydown', ['$event'])
-  handleKeyboardEvent(event: KeyboardEvent) {
-    if (event.key === 's' || event.key === 'S') {
-      this.triggerManualCall();
-    }
-  } 
+  @HostListener('document:keydown', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {
+    const target = event.target as HTMLElement;
+    if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') {
+      return;
+    }
+    if (event.key === 's' || event.key === 'S') {
+      this.triggerManualCall();
+      event.preventDefault();
+    }
 
-  // REQ_08: IDs de vídeo para a playlist
-  videoPlaylist: string[] = [
-    'WdxYgjjPSjg', // ID CORRETO do vídeo "Conheça o QuarkClinic"
-    'yq-oN_X7lXs', // Exemplo de segundo vídeo
-    'zR_n96I_lO8', // Exemplo de terceiro vídeo
-  ];
+    // Controle de Mudo (tecla 'M')
+    if (event.key === 'm' || event.key === 'M') {
+      this.onToggleVideoMute();
+      event.preventDefault();
+    }
+  } // REQ_08: IDs de vídeo para a playlist
+  videoPlaylist: string[] = [
+    'WdxYgjjPSjg', // ID do vídeo "Conheça o QuarkClinic"
+  ]; // Observable para a DATA
 
-  // Observable para a DATA (ex: "Segunda-feira, 29 de setembro")
-  currentDate$: Observable<string> = interval(1000).pipe(
-    map(() => {
-      const now = new Date();
-      const dateString = now.toLocaleDateString('pt-BR', { 
-        weekday: 'long', 
-        day: '2-digit', 
-        month: 'long' 
-      });
-      return dateString.charAt(0).toUpperCase() + dateString.slice(1);
-    })
-  );
+  currentDate$: Observable<string> = interval(1000).pipe(
+    map(() => {
+      const now = new Date();
+      const dateString = now.toLocaleDateString('pt-BR', {
+        weekday: 'long',
+        day: '2-digit',
+        month: 'long',
+      });
+      return dateString.charAt(0).toUpperCase() + dateString.slice(1);
+    })
+  ); // Observable para a HORA
 
-  // Observable para a HORA (ex: "20:30")
-  currentTime$: Observable<string> = interval(1000).pipe(
-    map(() => {
-      const now = new Date();
-      // CÓDIGO COMPLETADO: Fechamento do retorno e do pipe
-      return now.toLocaleTimeString('pt-BR', { 
-        hour: '2-digit', 
-        minute: '2-digit' 
-      });
-    })
-  );
+  currentTime$: Observable<string> = interval(1000).pipe(
+    map(() => {
+      const now = new Date();
+      return now.toLocaleTimeString('pt-BR', {
+        hour: '2-digit',
+        minute: '2-digit',
+      });
+    })
+  );
 
-  private stateSubscription!: Subscription;
+  private stateSubscription!: Subscription;
 
-  constructor(public callService: CallService) {} 
+  constructor(public callService: CallService) {}
 
-  ngOnInit(): void {
-    this.currentCall$ = this.callService.currentCall$;
+  ngOnInit(): void {
+    this.currentCall$ = this.callService.currentCall$;
 
-    // Lógica para mudar o estado da animação com base na chamada ativa
-    this.stateSubscription = this.currentCall$.subscribe(call => {
-      this.animationState = call ? 'chamada-destaque' : 'video-destaque';
-    });
-  }
+    this.stateSubscription = this.currentCall$.subscribe((call) => {
+      this.animationState = call ? 'chamada-destaque' : 'video-destaque';
+    });
+  }
 
-  triggerManualCall(): void {
-    // Dispara a lógica de chamada no serviço (REQ_03)
-    this.callService.triggerNextCall();
-    
-    // Contorno para REQ_05 (Som): Habilita o som do vídeo após a primeira interação
-    if (this.videoPlayer) {
-      this.videoPlayer.enableSound();
-    }
-  }
+  triggerManualCall(): void {
+    this.callService.triggerNextCall(); // REQ_05: Habilita o som do vídeo após a primeira interação (se estiver mudo)
 
-  ngOnDestroy(): void {
-    this.stateSubscription?.unsubscribe();
-  }
+    if (this.videoPlayer && this.isMuted) {
+      this.videoPlayer.enableSound();
+      this.isMuted = false;
+    }
+  }
+
+  // Lógica para o botão de Mudo/Volume da Sidebar
+  onToggleVideoMute(): void {
+    if (!this.videoPlayer || !this.videoPlayer.player) return;
+
+    this.isMuted = !this.isMuted;
+
+    if (this.isMuted) {
+      this.videoPlayer.player.mute();
+    } else {
+      this.videoPlayer.enableSound();
+    }
+  }
+
+  // Lógica para o botão de Ampliar/Reduzir da Sidebar
+  onToggleVideoSize(): void {
+    // Se houver uma chamada ativa, o botão volta ao estado padrão (REQ_04)
+    if (this.animationState === 'chamada-destaque') {
+      this.callService.returnToDefaultState();
+    } else {
+      // Caso contrário, minimiza o vídeo para o canto, sem disparar uma chamada
+      this.animationState = 'chamada-destaque';
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.stateSubscription?.unsubscribe();
+  }
 }
