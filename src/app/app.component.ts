@@ -36,10 +36,8 @@ import { HistoryListComponent } from './components/history-list/history-list.com
       state(
         'video-destaque',
         style({
-          // Aumentamos o espaçamento de 40px (20 de cada lado) para 80px (40 de cada lado)
           width: 'calc(100% - 420px - 80px)',
           height: 'calc(100% - 80px)',
-          // Ajustamos a posição para centralizar com o novo espaçamento
           top: '40px',
           left: '40px',
         })
@@ -90,8 +88,10 @@ export class AppComponent implements OnInit, OnDestroy {
   } // REQ_08: IDs de vídeo para a playlist
   videoPlaylist: string[] = [
     'WdxYgjjPSjg', // ID do vídeo "Conheça o QuarkClinic"
-  ]; // Observable para a DATA
-
+    'DHRwymPoAws', // ID do vídeo "Agendamento Online"
+  ]; 
+  
+  // Observable para a DATA
   currentDate$: Observable<string> = interval(1000).pipe(
     map(() => {
       const now = new Date();
