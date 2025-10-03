@@ -74,8 +74,9 @@ export class VideoPanelComponent implements OnInit, AfterViewInit {
     if (event.data === YT.PlayerState.ENDED) {
       this.player.playVideo();
     }
-  } // REQ_05: Método público chamado pelo AppComponent na interação do usuário ('S')
-
+  }
+  
+  // REQ_05: Método público chamado pelo AppComponent na interação do usuário ('S')
   public enableSound(): void {
     if (this.player && typeof this.player.unMute === 'function') {
       this.player.unMute();
