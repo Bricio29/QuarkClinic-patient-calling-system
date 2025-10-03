@@ -36,13 +36,16 @@ import { HistoryListComponent } from './components/history-list/history-list.com
       state(
         'video-destaque',
         style({
-          width: 'calc(100% - 390px)',
-          height: 'calc(100% - 40px)',
-          top: '20px',
-          left: '20px',
+          // Aumentamos o espaçamento de 40px (20 de cada lado) para 80px (40 de cada lado)
+          width: 'calc(100% - 420px - 80px)',
+          height: 'calc(100% - 80px)',
+          // Ajustamos a posição para centralizar com o novo espaçamento
+          top: '40px',
+          left: '40px',
         })
-      ), // Estado de chamada: Vídeo reduzido no canto
+      ),
 
+      // Estado de chamada: Vídeo reduzido no canto inferior direito
       state(
         'chamada-destaque',
         style({
@@ -53,15 +56,15 @@ import { HistoryListComponent } from './components/history-list/history-list.com
           top: 'auto',
           left: 'auto',
         })
-      ), // Transição suave (REQ_02)
+      ),
 
+      // Transição suave
       transition('video-destaque <=> chamada-destaque', [
         animate('0.7s ease-in-out'),
       ]),
     ]),
   ],
 })
-
 export class AppComponent implements OnInit, OnDestroy {
   @ViewChild(VideoPanelComponent) videoPlayer!: VideoPanelComponent;
   currentCall$!: Observable<Call | null>;

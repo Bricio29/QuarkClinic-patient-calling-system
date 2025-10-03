@@ -71,47 +71,44 @@
 .content-area {
   flex-grow: 1;
   display: flex;
-  width: 100%; /* Ocupa a largura total abaixo do header */
-  height: calc(100vh - 60px); /* Ocupa o restante da altura da tela */
+  width: 100%;
+  height: calc(100vh - 50px); /* Ajustado para a altura correta do header */
   overflow: hidden;
-  background-color: #f3f4f6; /* Fundo claro */
+  background-color: #f3f4f6;
+  position: relative; /* Adicionado para ser o novo contexto de posicionamento */
 }
 
 // Área Principal
 .main-content {
   flex-grow: 1;
-  position: relative;
+  position: relative; // Mantido para o call-panel
   background-color: #f3f4f6;
-  min-width: 60%; /* Garante que não fique muito pequeno */
-  padding: 20px; /* Padding interno para separar da borda da tela */
+  min-width: 60%;
+  padding: 20px;
   box-sizing: border-box;
 }
 
 // Histórico (Barra Lateral)
 .sidebar {
-  width: 1000px; /* Largura fixa conforme o visual da imagem */
-  min-width: 300px;
+  width: 420px; /* Largura ajustada para corresponder ao design */
+  min-width: 380px; /* Largura mínima ajustada */
   background-color: white;
-  border: 1px solid #e0e0e0;
+  border-left: 1px solid #e0e0e0;
   padding: 20px;
   box-sizing: border-box;
-  border-radius: 10px;
-  overflow-y: auto; /* Permite rolar se o histórico for longo */
+  overflow-y: auto;
 
-  // Ajusta o padding para o conteúdo da barra lateral
   app-history-list {
     display: block;
   }
 }
 
-// O painel de vídeo animado (dentro do .main-content)
+// O painel de vídeo animado (agora relativo a .content-area)
 app-video-panel {
   position: absolute;
   overflow: hidden;
-  top: 20px; /* Começa com o padding do .main-content */
-  left: 20px;
   z-index: 10;
-  // O width/height/bottom/right são controlados pela animação no TS
+  // Posição e tamanho são controlados pela animação
 }
 
 // O componente de destaque da chamada (app-call-panel)
